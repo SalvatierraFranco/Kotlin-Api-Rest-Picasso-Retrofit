@@ -1,5 +1,6 @@
 package com.example.picasso
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ListView
@@ -38,9 +39,29 @@ class MainActivity : AppCompatActivity() {
                 lv_photos = findViewById(R.id.lv_photos)
                 adapter = PhotoAdapter(photosList!!)
                 lv_photos.adapter = adapter
+
+                seleccionarItem(photosList!!)
             }
 
         })
+    }
+
+    private fun seleccionarItem(photosList: List<Photo>){
+        lv_photos = findViewById(R.id.lv_photos)
+
+        lv_photos.setOnItemClickListener { parent, view, position, id ->
+            goToPhoto(photosList.get(position))
+        }
+    }
+
+    private fun goToPhoto(aPhoto: Photo) {
+        var PhotoIntent = Intent(this, PhotoActivity::class.java).apply {
+            putExtra("albumId", aPhoto.albumId.toString())
+            putExtra("id", aPhoto.id.toString())
+            putExtra("title", aPhoto.title)
+            putExtra("url", aPhoto.url)
+        }
+        startActivity(PhotoIntent)
     }
 
     private fun inicioApi() {
