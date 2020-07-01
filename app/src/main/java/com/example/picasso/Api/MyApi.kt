@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface MyApi {
     @GET("/albums/1/photos")
-    fun getAlbums(): Call<List<Photo>>
+    fun getPhotos(): Call<List<Photo>>
 }

@@ -2,8 +2,13 @@ package com.example.picasso
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import com.example.picasso.Api.MyApi
+import com.example.picasso.Entities.Photo
 import com.example.picasso.RetrofitClient.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,9 +19,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         inicioApi()
+        callGetPhotos()
+    }
+
+    private fun callGetPhotos() {
+        val callGetPhotos = api?.getPhotos()
+        callGetPhotos?.enqueue(object: Callback<List<Photo>>{
+            override fun onFailure(call: Call<List<Photo>>, t: Throwable) {
+                Toast.makeText(this@MainActivity, t.message, Toast.LENGTH_LONG).show()
+            }
+
+            override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
+                var photosList: List<Photo>? = response.body()
+            }
+
+        })
     }
 
     private fun inicioApi() {
         api = RetrofitClient.retrofit.create(MyApi::class.java)
     }
+
+
 }
