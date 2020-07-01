@@ -2,7 +2,9 @@ package com.example.picasso
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ListView
 import android.widget.Toast
+import com.example.picasso.Adapter.PhotoAdapter
 import com.example.picasso.Api.MyApi
 import com.example.picasso.Entities.Photo
 import com.example.picasso.RetrofitClient.RetrofitClient
@@ -13,6 +15,8 @@ import retrofit2.Response
 class MainActivity : AppCompatActivity() {
 
     var api: MyApi? = null
+    lateinit var lv_photos: ListView
+    lateinit var adapter: PhotoAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<List<Photo>>, response: Response<List<Photo>>) {
                 var photosList: List<Photo>? = response.body()
+                lv_photos = findViewById(R.id.lv_photos)
+                adapter = PhotoAdapter(photosList!!)
+                lv_photos.adapter = adapter
             }
 
         })
